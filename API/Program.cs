@@ -25,7 +25,7 @@ namespace API
                 context.Database.Migrate();
                 DbInitializer.Initialize(context);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 logger.LogError(ex, "Problem migrating 'SeedData' to the database.");
             }
