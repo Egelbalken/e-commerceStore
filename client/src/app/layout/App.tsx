@@ -1,45 +1,39 @@
-import { Container, CssBaseline, Typography } from '@mui/material';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Container, createTheme, CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import React, { useState } from 'react';
 import Catalog from '../../features/catalog/Catalog';
-import { Product } from '../models/product';
 import Header from './Header';
 
 
-
-
 function App() {
-  const [products, setProducts] = useState<Product[]>([]);
 
-  // Important to add the a dependency array to prevent endless loop.
-  useEffect(() => {
-    fetch('http://localhost:5000/products')
-    .then(response => response.json())
-    .then(data => setProducts(data))
-  }, [])
+  const [darkMode, setDarkMode] = useState(false);
 
+  const paletteType = darkMode ? 'dark' : 'light'
+  // Adding theme controle
+  const theme = createTheme({
+    palette: {
+      mode: paletteType,
+      background: {
+        // Need to add a conditional black color.
+        default: paletteType ==  'light' ? '#eaeaea': '#121212'
+      }
+    }
+  })
 
-  function addProduct(){
-    setProducts(prevState => [...prevState, 
-      {
-        id: prevState.length + 100,
-        name: 'name', 
-        price: 200,
-        description: "Barfoot",
-        pictureURL: "http://picsum.photos/200",
-        type: 'Milk',
-        brand: 'nike',
-        quantityInStock: 100,
-    }])
+  // Sett the darkmode to the oposite of waht darkmode is.
+  function hanldeThemeChange(){
+    setDarkMode(!darkMode);
   }
 
   return (
-    <Fragment>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
+      <Header darkMode={darkMode} hanldeThemeChange={hanldeThemeChange}/>
       <Container>
-        <Catalog products={products}  addProduct={addProduct}/>
+        <Catalog />
       </Container>
-    </Fragment>
+    </ThemeProvider>
   );
 }
 
