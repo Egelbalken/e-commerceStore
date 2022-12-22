@@ -50,7 +50,8 @@ namespace API
 
             app.UseRouting();
 
-            // Important. Needs to be added after the UseRouting
+            // Important. Needs to be added after the UseRouting in the middleware
+            // Allawing the API ro access data whit orign from localhost:3000.
             app.UseCors(opt =>
             {
                 opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
